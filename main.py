@@ -1,8 +1,8 @@
 from agents.weather_forecast import weather_forecast_agent
 
 def main():
-    PROMPT = "what is weather in Ahmedabad?"
-    result = weather_forecast_agent(prompt=PROMPT)
+    #PROMPT = HumanMessage('weather in ahmedabad')
+    result = weather_forecast_agent(prompt="Weather in ahmedabad")
     
     print(result)
 
