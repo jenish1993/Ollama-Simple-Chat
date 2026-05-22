@@ -3,7 +3,7 @@ from langchain.agents import create_agent
 from langchain_ollama import ChatOllama
 from tools.tools import get_weather
 
-MODEL = os.environ.get("OLLAMA_MODEL", "ollama:llama3.2:1b")
+MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2:1b")
 
 def weather_forecast_agent(prompt:str) -> str:
 
@@ -13,17 +13,16 @@ def weather_forecast_agent(prompt:str) -> str:
         """
     
     llama_model = ChatOllama(
-        model = MODEL,
-        temperature=0.1, # set it very low because we don't want creative answers we want to call a tool and provide pricise answers.
+        model = "llama3.2:1b",
+        temperature=1, # set it very low because we don't want creative answers we want to call a tool and provide pricise answers.
         max_tokens=1000,
         timeout=30, # sets timeout so that if model fails to answer it times out.
+        system_prompt=SYSTEM_PROMPT
     )
 
-    agent = create_agent(
-        model = MODEL,
-        tools = [get_weather],
-        system_prompt = SYSTEM_PROMPT
-    )
+    tools= [get_weather]
+
+    agent = create_agent(llama_model, tools)
 
     result = agent.invoke(
         {
