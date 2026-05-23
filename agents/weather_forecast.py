@@ -3,6 +3,7 @@ from langchain.agents import create_agent
 from langchain_ollama import ChatOllama
 from langchain.messages import SystemMessage, HumanMessage
 from tools.tools import get_weather
+#from langgraph.checkpointer.memory import InMemoryServer
 
 MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2:1b")
 
@@ -27,7 +28,8 @@ def weather_forecast_agent(prompt:HumanMessage) -> str:
                     "text": SYSTEM_PROMPT
                 }
             ]
-        )
+        ),
+        #checkpointer = InMemoryServer()
     )
 
     tools= [get_weather]
@@ -39,7 +41,8 @@ def weather_forecast_agent(prompt:HumanMessage) -> str:
             "messages":[
                 {
                     "role":"user",
-                    "content": prompt
+                    "content": prompt + "\n" 
+                    + "Include Air Quality Index at this city."
                 }
             ]
         }
